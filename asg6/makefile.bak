@@ -1,0 +1,106 @@
+CC	= g++
+
+INCLUDE	= -I.
+
+#CFLAGS	= -g -m32 -DDEBUG
+CFLAGS	= -g -m32 -fopenmp
+
+LDFLAGS = \
+  -L. \
+  -L/usr/lib
+
+LDLIBS	= \
+  -lc -lm
+
+.cpp.o:
+	$(CC) -c $(INCLUDE) $(CFLAGS) $<
+
+SRCS = \
+vector.cpp \
+list.cpp \
+pixel.cpp \
+material.cpp \
+object.cpp \
+plane.cpp \
+sphere.cpp \
+model.cpp \
+camera.cpp \
+light.cpp \
+ray.cpp \
+photon.cpp \
+timer.cpp \
+kdtree.cpp \
+main.cpp
+
+OBJS = $(SRCS:.cpp=.o)
+
+all: main
+
+main: $(OBJS)
+	$(CC) $(CFLAGS) $(INCLUDE) -o $@ $(OBJS) $(LDFLAGS) $(LDLIBS)
+
+clean:
+	rm -f *.o core
+	rm -f *.a
+	rm -f main
+	rm -f *.ps *.pdf
+
+depend: $(SRCS)
+	makedepend -- $(CLFAGS) -- $(SRCS)
+	gccmakedep -- $(CFLAGS) -- $(SRCS)
+
+ENSCRIPTFLAGS = \
+  --fancy-header=mya2ps \
+  --columns=1 \
+  --pretty-print=makefile \
+  --ul-font=Times-Roman100 \
+  --underlay="asg01" \
+  --portrait
+
+PS2PDFFLAGS = \
+  -dCompatibilityLevel=1.3 \
+  -dMaxSubsetPct=100 \
+  -dSubsetFonts=true \
+  -dEmbedAllFonts=true \
+  -dAutoFilterColorImages=false \
+  -dAutoFilterGrayImages=false \
+  -dColorImageFilter=/FlateEncode \
+  -dGrayImageFilter=/FlateEncode \
+  -dMonoImageFilter=/FlateEncode
+
+ps:
+	enscript $(ENSCRIPTFLAGS) Makefile -p makefile.ps
+	enscript $(ENSCRIPTFLAGS) *.h -p interface.ps
+	enscript $(ENSCRIPTFLAGS) *.c* -p implementation.ps
+
+pdf:
+	ps2pdf $(PS2PDFFLAGS) makefile.ps
+	ps2pdf $(PS2PDFFLAGS) interface.ps
+	ps2pdf $(PS2PDFFLAGS) implementation.ps
+
+# DO NOT DELETE
+
+vector.o: vector.h
+list.o: vector.h pixel.h light.h material.h object.h list.h
+pixel.o: pixel.h
+material.o: pixel.h material.h
+object.o: vector.h pixel.h material.h object.h
+plane.o: vector.h pixel.h material.h object.h plane.h
+sphere.o: vector.h pixel.h material.h object.h sphere.h
+model.o: vector.h pixel.h camera.h light.h material.h object.h list.h plane.h
+model.o: sphere.h model.h ray.h photon.h kdtree.h timer.h
+camera.o: vector.h pixel.h camera.h
+light.o: vector.h pixel.h light.h
+ray.o: vector.h pixel.h camera.h light.h material.h object.h list.h plane.h
+ray.o: model.h ray.h photon.h kdtree.h
+photon.o: ray.h photon.h vector.h model.h kdtree.h
+timer.o: /usr/include/sys/time.h /usr/include/features.h
+timer.o: /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h
+timer.o: /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h
+timer.o: /usr/include/bits/types.h /usr/include/bits/typesizes.h
+timer.o: /usr/include/time.h /usr/include/bits/time.h
+timer.o: /usr/include/sys/select.h /usr/include/bits/select.h
+timer.o: /usr/include/bits/sigset.h timer.h
+kdtree.o: photon.h ray.h kdtree.h vector.h model.h
+main.o: vector.h pixel.h camera.h light.h material.h object.h list.h plane.h
+main.o: model.h ray.h photon.h kdtree.h timer.h

@@ -1,0 +1,94 @@
+camera cam1
+{
+   pixeldim 640 480
+   worlddim 8   6
+   viewpoint 4 3 6
+}
+
+light topright
+{
+   location 4 4.3 1
+   emissivity 1 1 1
+}
+
+material green
+{
+   ambient 0 5 0
+}
+
+material red
+{
+   ambient 5 0 0
+   diffuse  .7 .7 .7
+  specular  .3 .3 .3
+}
+
+material blue
+{
+   ambient 0 0 5
+   diffuse  .2 .2 .2
+  specular  .8 .8 .8
+}
+
+material cyan
+{
+   ambient 0 4 5
+   diffuse  .2 .2 .2
+  specular  .8 .8 .8
+    alpha  .4
+      ior  1.000293
+}
+
+material yellow
+{
+   ambient  5 4 0
+   diffuse  .7 .7 .7
+  specular  .3 .3 .3
+}
+
+plane leftwall
+{
+   material green
+   normal 3 0 1
+   point  0 0 0
+}
+
+plane rightwall
+{
+   material yellow
+   normal -3 0 1
+   point   8 0 0
+}
+
+material gray
+{
+   ambient 2 2 2
+}
+
+plane floor
+{
+   material gray
+   normal 0 1 0
+   point  0 -0.2 0
+}
+
+sphere upperright
+{
+   material red
+   center 6 4 -2
+   radius 2
+}
+
+sphere central
+{
+   material blue
+   center 2 2 -2
+   radius 1.3
+}
+
+sphere vitreous
+{
+   material cyan
+   center 4 2 -1
+   radius 2
+}

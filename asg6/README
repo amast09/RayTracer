@@ -1,0 +1,16 @@
+   1. CpSc 212 Section 3
+
+   2. Aaron Mast
+
+   3. Assignment 6 - Photon Mapper
+
+   4. Manipulated kdtree to accept photons instead of points, then added a flux elimante to ray trace
+      to take advantage of kdtree k nearest neighbors to figure out the actual flux of the image 
+
+   5. I learned more about C++ syntax and how to derive classes, as well as syntax needed to render flux
+      in a photon mapper after finding the nearest neighbors to each photon
+
+   6. make
+      ./main airball.txt > img.ppm
+      xv img.ppm
+
